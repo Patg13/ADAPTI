@@ -17,18 +17,19 @@ This will compile ADAPTI's internal programs and edit the option files to includ
 ADAPTI's dependencies:
 This pipeline was designed to use less dependencies as possible, but you must install external programs that ADAPTI uses.
 
-**vsearch v2.14.2+ https://github.com/torognes/vsearch (if you want to use vsearch for the blast and the reassembly step without extracting the ITS1 prior to clustering, this is the only dependency you need)**
+-**vsearch v2.14.2+ https://github.com/torognes/vsearch (if you want to use vsearch for the blast and the reassembly step without extracting the ITS1 prior to clustering, this is the only dependency you need)**
 
-**pandaseq v2.11 https://github.com/neufeld/pandaseq (can be replaced by pear https://github.com/xflouris/PEAR.git or vsearch)**
+-**pandaseq v2.11 https://github.com/neufeld/pandaseq (can be replaced by pear https://github.com/xflouris/PEAR.git or vsearch)**
 
-**swarm v2.2.2+ https://github.com/torognes/swarm (can be replaced by vsearch) - VERSION 3.0 NOT TESTED**
+-**swarm v2.2.2+ https://github.com/torognes/swarm (can be replaced by vsearch) - VERSION 3.0 NOT TESTED**
 
-**blast+ v2.9.0+ https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ (can be replaced by vsearch)**
+-**blast+ v2.9.0+ https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ (can be replaced by vsearch)**
 
-**ITSx v1.1.2 https://microbiology.se/sw/ITSx_1.1.2.tar.gz (can be ignored if your don't want to extract ITS1 of if you don't use ITS1)**
-
+-**ITSx v1.1.2 https://microbiology.se/sw/ITSx_1.1.2.tar.gz (can be ignored if your don't want to extract ITS1 of if you don't use ITS1)**
 
 NOTICE: Do not use anaconda3 to install vsearch, some version contains bugs that can break your analysis depending of your options
+
+Some of my C++ programs uses the tclap library http://tclap.sourceforge.net/ for option parsing and it's included with the source codes.
 
 To launch the pipeline copy the file /home/ubuntu/ADAPTI/Programmes/Programmes_Modules/Pipelines/ADAPTI.sh in your analysis folder (where your fastq.gz files are located)
 and copy one of the option files in the same folder ex: /home/ubuntu/ADAPTI/Programmes/Programmes_Modules/Pipelines/optionfile_ADAPTI_Def.txt
