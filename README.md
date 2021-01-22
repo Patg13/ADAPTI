@@ -1,4 +1,4 @@
-# ADAPTI V 1.0
+# ADAPTI
 A metabarcoding pipeline designed to work with fungi ITS1 pathology datasets
 
 
