@@ -43,11 +43,19 @@ screen -L ./ADAPTI.sh optionfile.txt
 
 TO DO:
 **COMMIT THE FIRST VERSION OF ADAPTI**
+
 Checkpoint system (for now, you have to relaunch the entire pipeline in case of error)
+
 Databases and dependencies Checking
+
 Pipeline test script (to make sure everything is correctly installed)
+
 Some python program are old and take too much RAM, I must rewrite them
+
 Add support for trimmomatic (if you don't want to use Illumicut, which need your primers)
+
 Add a new step to filter bad quality sequences (in pathology, we don't do it but maybe you want to do it)
+
 Create a singularity recipe to install the dependencies and the pipeline
+
 Write a better guide where every option in the optionfiles are described (sorry for that...)
