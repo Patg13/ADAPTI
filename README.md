@@ -41,7 +41,8 @@ It's recommended to launch it with screen if you are working remotely
 screen -L ./ADAPTI.sh optionfile.txt
 
 
-TO DO:
+##TO DO:
+
 **COMMIT THE FIRST VERSION OF ADAPTI**
 
 Checkpoint system (for now, you have to relaunch the entire pipeline in case of error)
