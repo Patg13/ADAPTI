@@ -1,0 +1,190 @@
+#################################
+#         Main Analysis         #
+#################################
+
+INSTALLATION_PATH=installation_path_here
+
+ANALYSIS_TYPE=ITSPatho
+# ITSPatho : Fungi using ITS barcode (optimized for Pathogen screening)
+# ITSSoil : Fungi using ITS barcode (optimized for Soil Studies)
+# SoilExtITS1 : Fungi using ITS1 barcode (For Soil Studies with ITS1 extraction capability)
+# Cox : Insects using the Cyclooxygenase protein barcode (Genetic Code : invertebrae )
+
+NB_THREAD=8
+
+ANALYSIS_NAME=RANDOM
+# RANDOM will create a unique analysis name using this syntax : 
+# Analysis[Random Number]_[Analysis type]_[Analysis Date]_[Analysis Time]
+
+IGNORE_CHECKPOINTS=false
+# true = Ignore presence of checkpoints (force the whole analysis to proceed if relaunched)
+
+REASSEMBLE_SAMPLES=true
+REASSEMBLY_METHOD=pandaseq
+# pandaseq
+# pear
+# vsearch
+
+CHIMERAS_FILTERING=false
+CHIMERAS_FILTERING_METHOD=vsearch_denovo1
+# vsearch_denovo1: Use the uchime denevo chimeras removal method
+# vsearch_denovo2: Use the uchime2 denevo chimeras removal method
+# vsearch_denovo3: Use the uchime3 denevo chimeras removal method
+
+MAX_MEMORY_AVAIL=90000
+# Mainly Define Celing Value for Swarm fastidious (in Mb)
+# Not used elsewhere for now
+
+CLUSTERING_METHOD=vsearch
+# vsearch :
+# swarm : 
+
+BLAST_METHOD=vsearch
+# vsearch : Use Vsearch usearch_global algorithm to blast OTUs (RECOMMENDED)
+# blastn : Use Original Blastn algorithm to blast (Blast+ suite needed)
+# blast_enh : Use blastn multi-thread enhancing algorithm (Blast+ suite needed)
+
+KEEP_OTU_EXT_FILES=true
+
+DEBUG_MODE=true
+# Debug lines will appear in the console (will not affect the analysis)
+
+
+##############################################################
+#       Soils analysis (ITSSoil or SoilExtITS1 only)         #
+##############################################################
+
+COMPRESS_OTUS_BY_ACC=false
+ALIGN_LENGTH_THRESHOLD=100
+
+ADD_FUNGI_BIOFUNCTS=true
+
+BLAST_TARGET=fullseqs
+# fullseqs or ITS1
+
+REMOVE_SINGLETONS_FINAL=true
+
+##############################################################
+#     Section Pathogene Screening (ITSPatho Only)            #
+##############################################################
+# WARNING ! NOT IMPLEMENTED YET !
+
+SCREEN_SCRAP_FOR_PATHO=false
+FASTA_DATABASE=fasta_database_location_here
+
+#################################
+#     Section Reassembly        #
+#################################
+
+FORWARD_SUFFIX=_R1_001.fastq.gz
+REVERSE_SUFFIX=_R2_001.fastq.gz
+FINAL_SUFFIX=.Complete.fastq
+
+#################################
+#     Section Reassembly        #
+#        PandaSeq Only          #
+#################################
+
+PS_MINOVERLAP=default
+#if =default, minimum overlap will be at least 1 nucleotide
+
+PS_MAXOVERLAP=default
+# if =default, maximum overlap will be the read length
+
+#################################
+#      Section Illumicut        #
+#################################
+
+FORWARD_PRIMER=CTTGGTCATTTAGAGGAAGTAA
+REVERSE_PRIMER=CAAAGAYTCGATGAYTCAC
+MINIMUM_LENGTH=100
+MAX_AMBIG_COUNT=0
+MAX_MISMATCH_PRIMER=3
+MAXIMAL_PRIMER_OFFSET=5
+
+#################################
+#    Section HomopRemover       #
+#################################
+
+MAX_HOMOP_LENGTH=9
+MIN_SEQUENCES_SIZE=2
+
+######################################
+#      Section ITS1 Extraction       #
+# Soil+ITS1 extraction Analysis ONLY #
+######################################
+
+F_SSU_EXTRACTION_PATTERN=CTTTYARCAAYGGATCTCTT
+F_58S_EXTRACTION_PATTERN=AACCWGCGGARGGATCATTA
+PATTERN_MAX_MISMATCH=3
+
+#################################
+#      Section CoxFIlter        #
+#      Cox Analysis ONLY        #
+#################################
+
+MAX_STOP_CODONS=1
+
+#################################
+#      Section Clustering       #
+#     vsearch method ONLY       #
+#################################
+
+OTU_ID=0.97
+OTU_ID_DEFINITION=1
+USE_CONSENSUS_OTUS=false
+# not used with ITS1 extraction analysis
+
+CLUSTERING_ALGORITHM=cluster_size
+# cluster_size : Generate clusters using --cluster_size algorithm
+# cluster_unoise : Generate clusters using UNOISE algorithm
+
+MINIMUM_SIZE=1
+# UNOISE algorithm Only
+
+#################################
+#      Section Clustering       #
+#     swarm method ONLY         #
+#################################
+
+SWARM_DIFFERENCES=1
+
+FASTIDIOUS_MODE=true
+# Swarm Differences must be = 1 for fastidious mode
+
+NO_OTU_BREAKING=false
+# Not recommended 
+
+
+#################################
+#     Section Common Blast      #
+#         All methods           #
+#################################
+
+MAX_TARGET_SEQ=25
+BAD_SEQ_OUTPUT=true
+TRUNCATE_IDENTIFICATION_LINE=true
+MAX_IDENTIFICATION_CHARS=40
+
+#################################
+#   Section Blastn method ONLY   #
+#################################
+
+DATABASE=database_location_here
+
+#################################
+#        Section vsearch        #
+#      Blasting method ONLY     #
+#################################
+
+FASTA_DATABASE=fasta_database_location_here
+QUERY_COVERAGE_MIN=0.6
+IDENTITY_MIN=0.80
+MAX_ACCEPT=25
+MAX_REJECT=50
+
+
+
+
+
+

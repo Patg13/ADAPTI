@@ -1,0 +1,348 @@
+Acerviclypeatus
+Acremonium
+Alternaria
+Apiognomonia
+Apiognomonia quercina
+Apioplagiostoma
+Apiosporina
+Apiosporina morbosa
+Apiosporopsis
+Armillaria
+Articularia
+Ascocalyx
+Ascocalyx abietina
+Ascochyta
+Asperisporium
+Asteridiella
+Asteroma
+Asteromella
+Athelia 
+Atropellis 
+Aureobasidium
+Biscogniauxia
+Bjerkandera
+Botryodiplodia
+Botryosphaeria
+Botrytis
+Brasiliomyces
+Brunchorstia
+Brunchorstia pinea
+Bursaphelencus
+Calonectria
+Calyptospora
+Camarosporium
+Camillea
+Camptomeris
+Canavirgella
+Capnodium
+Cenangium
+Cephalosporium
+Ceratobasidium
+Ceratocystis
+Ceratocystis fagacearum
+Ceratocystis fimbriata
+Ceratorhiza
+Cercospora
+Cercosporella
+Cercosporidium
+Cercostigmina
+Cerotelium
+Cerrena
+Chaetothyrium
+Chalara
+Chalara fraxina
+Chondrostereum
+Chrysomyxa
+Chrysoporthe
+Ciborinia
+Cladosporium
+Coleosporium
+Colletogloeum
+Colletotrichum
+Coniothyrium
+Conoplea
+Cristulariella
+Cronartium
+Crumenulopsis
+Cryphonectria
+Cryptocline
+Cryptococcus
+Cryptoderma
+Cryptodiaporthe
+Cryptosphaeria
+Cryptosporiopsis
+Cumminsiella 
+Cyclaneusma
+Cylindrocarpon
+Cylindrocladiella
+Cylindrocladium
+Cylindrosporium
+Cystotheca
+Cytophoma
+Cytospora
+Cytosporina
+Davisomycella
+Dematophora
+Dendrothele
+Diaporthe
+Diaporthe tanakae
+Dibotryon
+Dicarpella
+Didymascella
+Diplocarpon
+Diplodia
+Diplodina
+Discella
+Discosia
+Discosporium
+Discula
+Discula destructiva
+Discula fraxinea
+Dothichiza
+Dothiorella
+Dothistroma
+Dothistroma pini
+Drepanopeziza
+Echinodontium
+Elsinoe
+Elytroderma
+Encoelia
+Endocronartium
+Endothia
+Entoleuca
+Epipolaeum
+Eruptio 
+Euantennaria
+Eutypella
+Eutypella parasitica
+Exobasidium
+Filobasidium
+Fomes
+Fomitiporia
+Fomitopsis
+Fusarium
+Fusarium circinatum
+Fusarium lateritium
+Fusarium subglutinans f.sp. Pini
+Fusicladium
+Fusicoccum 
+Ganoderma 
+Geosmithia
+Geosmithia morbida
+Geomyces
+Geomyces destructans
+Giberella
+Giberella circinata
+Globifomes
+Gloeosporidina
+Gloeosporium
+Glomerella
+Gnomonia
+Gnomoniella
+Gnomoniella fraxini
+Golovinomyces
+Graphiola
+Graphiola phoenicis
+Gremmeniella
+Gremmeniella abietina
+Grovesinia
+Guignardia
+Gymnosporangium
+Gymnosporangium fuscum
+Gymnosporangium yamadae
+Gyrostroma 
+Haematonectria
+Helicobasidium 
+Hemiphacidium
+Hendersonia
+Herpotrichia
+Heterobasidion
+Heretobasidion irregulare
+Hyalospora
+Hyphoderma
+Hyphodermella
+Hypoxylon
+Innonotus
+Isthmiella
+Kabatiella
+Kabatina
+Kalmusia
+Kirramyces
+Kretzschmaria
+Kutilakesa
+Lachnellula
+Lachnellula willkommii
+Laetiporus
+Lasiodiplodia
+Lecanosticta
+Lembosina
+Lepteutypa
+Leptodothiorella
+Leptographium
+Leptosphaeria
+Leptostroma
+Leucophyllum
+Leucospermum
+Leucostoma
+Leveillula
+Libertella
+Linospora
+Lophodermella
+Lophodermium
+Lophophacidium
+Macrodiplodiopsis
+Macrophomina
+Marssoniella
+Marssonia
+Melampsora
+Melampsoridium
+Melanconis
+Melanoconium
+Meliola
+Meria 
+Metacapnodium
+Microsphaera
+Microsphaeropsis
+Microstroma
+Milesina
+Miuraea
+Monilinia
+Monostichella
+Montagnula
+Mycosphaerella
+Mycosphaerella fraxinicola
+Mycosphaerella gibsonii
+Mycosphaerella juglandis
+Mycosphaerella pini
+Mycosphaerella platani
+Mycosphaerella populicola
+Mycosphaerella populorum
+Nectria
+Nectriella
+Nectriella pironii
+Neofabraea
+Neonectria
+Noepeckia
+Nodulisporium
+Nothophacidium
+Oidiopsis
+Oidium
+Onnia
+Ophiocapnocoma
+Ophiodotella
+Ophiognomonia
+Ophiognomonia juglandacearum
+Ophiostoma
+Ophiostoma polonica
+Ophiostoma ulmi
+Ovulariopsis
+Oxyporus
+Paraphaeosphaeria
+Passalora
+Pereniporia
+Peridermium
+Peronospora
+Pestalosphaeria
+Pestalotia
+Pestalotiopsis
+Pezicula
+Phacidiopycnis
+Phacidium
+Phaeocryptopus
+Phaeoisaiopsis
+Phaeolus
+Phaeophleospora
+Phaeoramularia
+Phellinus
+Phialophora
+Phlebiopsis
+Phloeospora
+Ploeosporella
+Phlyctema
+Phoma
+Phomopsis
+Phragmidium
+Phyllachora
+Phyllactinia
+Phyllostica
+Phymatotrichopsis
+Phymatotrichum
+Phytophthora
+Phytophthora ramorum
+Piggotia
+Piptoporus
+Plasmopara
+Ploechaeta
+Ploioderma
+Podosphaera
+Pollaccia
+Polyporus
+Porodaedalea
+Potebniamyces
+Pseudocercospora
+Pseudocercosporella 
+Pseudocercosporella fraxini
+Pseudoinonotus
+Puccinia
+Pucciniastrum
+Pythium
+Raffaella
+Ramularia
+Raustoria 
+Rhabdocline
+Rhizina
+Rhizoctonia
+Rhizosphaera
+Rhytisma
+Rosellinia
+Rosellinia necatrix
+Rubrinectria
+Sarcotrochila
+Sawadaea
+Schizophyllum
+Scirrhia
+Scleroderris 
+Sclerophoma
+Sclerostagonospora
+Sclerotium 
+Scorias
+Seimatosporium
+Seridium
+Septogloeum
+Septoria
+Sirococcus
+Sirococcus clavigignenti
+Sonderhenia
+Sphaceloma
+Sphaerognomonia
+Sphaeropsis
+Spilocaea
+Splanchnonema
+Stagonospora
+Stegonosporium
+Stegophora
+Stenella 
+Stereum
+Stigmina
+Streptopodium
+Sydowia
+Taphrina
+Thyronectria
+Tubakia
+Tubercularia
+Tuberculina
+Typhulochaeta
+Uncinula
+Uncinuliella
+Uredinopsis
+Urnula 
+Ustulina
+Uwebraunia
+Valsa 
+Venturia
+Venturia nashicola
+Verticicladiella
+Verticillium
+Waitea
+Xylaria
+Xylocladium
