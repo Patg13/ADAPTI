@@ -1,5 +1,5 @@
 # ADAPTI (Automatic DNA Analysis and Processing Tool for Illumina)
-A metabarcoding pipeline designed to work with fungi ITS1 pathology datasets
+An open-source metabarcoding pipeline designed to work with fungi ITS1 pathology datasets
 
 
 ADAPTI publication reference (french) :
