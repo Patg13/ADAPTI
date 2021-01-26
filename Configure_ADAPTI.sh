@@ -26,6 +26,7 @@ then
     mv CoxFIlter $install_path/Traitement_Cox/
     cd $sources_path
     rm -R Cox_FIlter_V2/
+    #make clean
     if [ ! -e $install_path/Traitement_Cox/CoxFIlter ]
     then
         echo "ERROR: CoxFIlter make failed, aborting ADAPTI configuration"
@@ -41,6 +42,7 @@ then
     mv derIplicate $install_path/Nettoyage/
     cd $sources_path
     rm -R DerIplicate_V2/
+    #make clean
     if [ ! -e $install_path/Nettoyage/derIplicate ]
     then
         echo "ERROR: derIplicate make failed, aborting ADAPTI configuration"
@@ -54,6 +56,7 @@ then
     mv HomopRemover $install_path/Nettoyage/
     cd $sources_path
     rm -R Homop_Remover_V2_5/
+    #make clean
     if [ ! -e $install_path/Nettoyage/HomopRemover ]
     then
         echo "ERROR: HomopRemover make failed, aborting ADAPTI configuration"
@@ -69,6 +72,7 @@ then
     mv Illumicut $install_path/Nettoyage/
     cd $sources_path
     rm -R Illumicut_V5/
+    #make clean
     if [ ! -e $install_path/Nettoyage/Illumicut ]
     then
         echo "ERROR: Illumicut make failed, aborting ADAPTI configuration"
@@ -84,6 +88,7 @@ then
     mv PatFinder $install_path/Extraction_ITS/
     cd $sources_path
     rm -R PatFinder_V2/
+    #make clean
     if [ ! -e $install_path/Extraction_ITS/PatFinder ]
     then
         echo "ERROR: PatFinder make failed, aborting ADAPTI configuration"
