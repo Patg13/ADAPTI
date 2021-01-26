@@ -1,0 +1,103 @@
+void *TrimSequences_Thread(void *threadarg)
+{
+
+	struct thread_data *my_data;
+
+	my_data = (struct thread_data *) threadarg;
+
+	int seq_count =0;
+
+	vector<SimpleFastaSequence*>::iterator iter;
+	int limit_len=my_data->p_len;
+	int work_size= my_data->p_dSeq->size();
+	string Pro_name="Pro: "+to_string(my_data->thread_id+1);
+
+
+	for (iter=my_data->p_dSeq->begin(); iter != my_data->p_dSeq->end(); ++iter)
+	{
+		string sequence_name=(*iter)->reqNomSeq();
+		string sequence=(*iter)->reqSeq();
+		string Fprimer=(*iter)->reqFprimer();
+		string Rprimer=(*iter)->reqRprimer();
+
+
+
+		string trimmed1;
+		string trimmed2;
+		string trimmed3;
+
+		seq_count++;
+
+		/*
+		if ( seq_count % 10000 == 0)
+		{
+			cout << seq_count <<endl;
+		}
+		*/
+		if (seq_count % 20000 == 0)
+		{
+			printProgBarPro(((seq_count*100)/(work_size)),Pro_name);
+		}
+
+		trimmed1=TrimSeq(sequence, Fprimer, my_data->p_mismatch, 40, -1);
+		if (trimmed1.length() == 0){
+
+			(*iter)->asgScrapReason("Forward_Primer_Not_Found");
+			(*iter)->asgGoodInd(0);
+			continue;
+		}
+		trimmed2=TrimSeq(ReverseComplementarySeq(trimmed1), Rprimer, my_data->p_mismatch, 40, -1);
+
+		if (trimmed2.length() == 0){
+
+			(*iter)->asgScrapReason("Reverse_Primer_Not_Found");
+			(*iter)->asgGoodInd(0);
+			continue;
+			}
+
+		trimmed3=ReverseComplementarySeq(trimmed2);
+
+		(*iter)->asgSeq(trimmed3);
+		if (trimmed3.length() < MIN_LENGTH)
+		{
+			std::string reason="Sequence_Too_Short_Limit_"+to_string(limit_len);
+			//(*iter)->asgSeq(trimmed3);
+			(*iter)->asgScrapReason(reason);
+			(*iter)->asgGoodInd(0);
+			continue;
+		}
+		if (countBase(trimmed3,'N') > 0)
+		{
+			//(*iter)->asgSeq(trimmed3);
+			(*iter)->asgScrapReason("Sequence_With_Ambiguities");
+			(*iter)->asgGoodInd(0);
+			continue;
+		}
+		if (my_data->p_multiprimer == 1){
+				if (trimmed3.find(Fprimer)!=std::string::npos)
+				{
+					(*iter)->asgScrapReason("Multiple_Forward_Primer");
+					(*iter)->asgGoodInd(0);
+					continue;
+				}
+				if ((ReverseComplementarySeq(trimmed3).find(Rprimer)) !=std::string::npos)
+				{
+					(*iter)->asgScrapReason("Multiple_Reverse_Primer");
+					(*iter)->asgGoodInd(0);
+					continue;
+				}
+				(*iter)->asgGoodInd(1);
+				continue;
+
+		}
+		else{
+			(*iter)->asgGoodInd(1);
+			continue;
+		}
+	}
+	printProgBarPro(100,Pro_name);
+	//cout << seq_count << endl;
+
+	//my_data->p_dSeq->shrink_to_fit();
+	pthread_exit(NULL);
+}

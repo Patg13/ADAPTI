@@ -1,0 +1,6 @@
+12:29:26 **** Incremental Build of configuration Release for project DNAlibPG ****
+make all 
+make: Nothing to be done for `all'.
+
+12:29:26 Build Finished (took 73ms)
+

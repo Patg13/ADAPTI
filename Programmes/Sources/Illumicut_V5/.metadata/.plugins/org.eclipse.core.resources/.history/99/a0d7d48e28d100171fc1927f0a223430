@@ -1,0 +1,108 @@
+Main.o: ../Main.cpp ../SimpleFastaSequence.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/ComponentEmptyException.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/FastqException.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/DNAfunctions.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/DNAfunctions.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/PhredScoreFunctions.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/FastaSequence.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/ComponentEmptyException.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/FastqSequence.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/FastaSequence.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/PhredScoreFunctions.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/QualityNotEqualSequenceException.h \
+ ../Repartition.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/CmdLine.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/SwitchArg.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/Arg.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/ArgException.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/Visitor.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/CmdLineInterface.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/ArgTraits.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/StandardTraits.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/MultiSwitchArg.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/UnlabeledValueArg.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/ValueArg.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/Constraint.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/OptionalUnlabeledTracker.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/UnlabeledMultiArg.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/MultiArg.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/XorHandler.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/HelpVisitor.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/CmdLineOutput.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/VersionVisitor.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/IgnoreRestVisitor.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/StdOutput.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/ValuesConstraint.h \
+ ../NewDNAFunctions.h
+
+../SimpleFastaSequence.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/ComponentEmptyException.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/FastqException.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/DNAfunctions.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/DNAfunctions.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/PhredScoreFunctions.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/FastaSequence.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/ComponentEmptyException.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/FastqSequence.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/FastaSequence.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/PhredScoreFunctions.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/QualityNotEqualSequenceException.h:
+
+../Repartition.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/CmdLine.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/SwitchArg.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/Arg.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/ArgException.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/Visitor.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/CmdLineInterface.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/ArgTraits.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/StandardTraits.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/MultiSwitchArg.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/UnlabeledValueArg.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/ValueArg.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/Constraint.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/OptionalUnlabeledTracker.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/UnlabeledMultiArg.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/MultiArg.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/XorHandler.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/HelpVisitor.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/CmdLineOutput.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/VersionVisitor.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/IgnoreRestVisitor.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/StdOutput.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include/tclap/ValuesConstraint.h:
+
+../NewDNAFunctions.h:

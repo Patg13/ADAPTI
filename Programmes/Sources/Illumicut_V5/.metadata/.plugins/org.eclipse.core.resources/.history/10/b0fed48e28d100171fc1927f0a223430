@@ -1,0 +1,9 @@
+NewDNAFunctions.o: ../NewDNAFunctions.cpp ../NewDNAFunctions.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/DNAfunctions.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/DNAfunctions.h
+
+../NewDNAFunctions.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/DNAfunctions.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/DNAfunctions.h:

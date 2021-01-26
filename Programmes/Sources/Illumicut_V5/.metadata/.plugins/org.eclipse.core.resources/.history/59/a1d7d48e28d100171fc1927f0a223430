@@ -1,0 +1,6 @@
+NewAlignmentFcts.o: ../NewAlignmentFcts.cpp ../NewAlignmentFcts.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/AlignmentFunctions.h
+
+../NewAlignmentFcts.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/AlignmentFunctions.h:

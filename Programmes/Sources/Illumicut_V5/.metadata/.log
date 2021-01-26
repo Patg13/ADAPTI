@@ -1,0 +1,34 @@
+!SESSION 2017-11-24 09:58:37.916 -----------------------------------------------
+eclipse.buildId=4.7.1.M20171009-0410
+java.version=1.8.0_144
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_CA
+Framework arguments:  -product org.eclipse.epp.package.cpp.product
+Command-line arguments:  -os linux -ws gtk -arch x86_64 -product org.eclipse.epp.package.cpp.product
+
+!ENTRY org.eclipse.core.resources 2 10035 2017-11-24 09:58:43.181
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY org.eclipse.cdt.core 1 0 2017-11-24 09:59:47.344
+!MESSAGE Indexed 'DNAlibPG' (8 sources, 8 headers) in 0.946 sec: 384 declarations; 700 references; 27 unresolved inclusions; 0 syntax errors; 379 unresolved names (26%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2017-11-24 10:00:02.600
+!MESSAGE Indexed 'Illumicut_V4' (5 sources, 279 headers) in 15.1 sec: 38,800 declarations; 78,959 references; 107 unresolved inclusions; 0 syntax errors; 1,643 unresolved names (1.4%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2017-11-24 10:00:03.111
+!MESSAGE Indexed 'tclaplib' (0 sources, 24 headers) in 0.454 sec: 1,233 declarations; 2,015 references; 68 unresolved inclusions; 0 syntax errors; 1,569 unresolved names (33%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2017-11-24 10:01:42.196
+!MESSAGE Indexed 'Illumicut' (5 sources, 334 headers) in 10 sec: 51,933 declarations; 103,420 references; 0 unresolved inclusions; 0 syntax errors; 9 unresolved names (0.0058%)
+
+!ENTRY org.eclipse.cdt.launch 4 104 2017-11-24 11:51:02.613
+!MESSAGE Program file does not exist
+
+!ENTRY org.eclipse.cdt.launch 4 104 2017-11-24 11:51:12.474
+!MESSAGE Program file does not exist
+
+!ENTRY org.eclipse.launchbar.core 2 0 2017-11-24 12:01:29.024
+!MESSAGE Enablement expression is missing for descriptor type org.eclipse.cdt.debug.core.coreBuildDescriptorType
+
+!ENTRY org.eclipse.launchbar.core 2 0 2017-11-24 12:01:29.025
+!MESSAGE Enablement expression is missing for config provider for org.eclipse.cdt.debug.core.coreBuildDescriptorType

@@ -1,0 +1,68 @@
+12:29:53 **** Incremental Build of configuration Release for project Illumicut ****
+make all 
+Building file: ../Main.cpp
+Invoking: GCC C++ Compiler
+g++ -std=c++0x -std=c++11 -I"/data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include" -I"/data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG" -O3 -Wall -c -fmessage-length=0 -MMD -MP -MF"Main.d" -MT"Main.o" -o "Main.o" "../Main.cpp"
+../Main.cpp: In function 'void* TrimSequences_Thread(void*)':
+../Main.cpp:188:24: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+   if (trimmed.length() < my_data->p_len)
+                        ^
+../Main.cpp: In function 'int main(int, char**)':
+../Main.cpp:501:23: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+       for (int i=0; i < v_repartition.size();i++)
+                       ^
+../Main.cpp:505:26: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+        for (int j = 0; j < v_repartition[i].size(); j++)
+                          ^
+../Main.cpp: In function 'void* TrimSequences_Thread(void*)':
+../Main.cpp:172:3: warning: 'posRevc' may be used uninitialized in this function [-Wmaybe-uninitialized]
+   if (posRevc == 0){
+   ^
+../Main.cpp:158:3: warning: 'posFor' may be used uninitialized in this function [-Wmaybe-uninitialized]
+   if (posFor == 0){
+   ^
+Finished building: ../Main.cpp
+ 
+Building file: ../NewAlignmentFcts.cpp
+Invoking: GCC C++ Compiler
+g++ -std=c++0x -std=c++11 -I"/data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include" -I"/data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG" -O3 -Wall -c -fmessage-length=0 -MMD -MP -MF"NewAlignmentFcts.d" -MT"NewAlignmentFcts.o" -o "NewAlignmentFcts.o" "../NewAlignmentFcts.cpp"
+Finished building: ../NewAlignmentFcts.cpp
+ 
+Building file: ../NewDNAFunctions.cpp
+Invoking: GCC C++ Compiler
+g++ -std=c++0x -std=c++11 -I"/data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include" -I"/data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG" -O3 -Wall -c -fmessage-length=0 -MMD -MP -MF"NewDNAFunctions.d" -MT"NewDNAFunctions.o" -o "NewDNAFunctions.o" "../NewDNAFunctions.cpp"
+../NewDNAFunctions.cpp: In function 'int FindTrimPosition(const string&, const string&, int, int)':
+../NewDNAFunctions.cpp:17:15: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+   if (p_limit > p_seq.length())
+               ^
+../NewDNAFunctions.cpp:22:18: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+   if (len_primer >= p_seq.length())
+                  ^
+../NewDNAFunctions.cpp: In function 'bool IsValidPrimer(const string&)':
+../NewDNAFunctions.cpp:47:18: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+  for(int i =0; i < seq.length(); i++){
+                  ^
+Finished building: ../NewDNAFunctions.cpp
+ 
+Building file: ../Repartition.cpp
+Invoking: GCC C++ Compiler
+g++ -std=c++0x -std=c++11 -I"/data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include" -I"/data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG" -O3 -Wall -c -fmessage-length=0 -MMD -MP -MF"Repartition.d" -MT"Repartition.o" -o "Repartition.o" "../Repartition.cpp"
+../Repartition.cpp: In function 'void RepartitionCharge(std::vector<std::vector<cutlib::SimpleFastaSequence*> >*, std::vector<cutlib::SimpleFastaSequence>*, int)':
+../Repartition.cpp:57:31: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+   if ((direction > 0) && (ite == p_repartition->size()))
+                               ^
+Finished building: ../Repartition.cpp
+ 
+Building file: ../SimpleFastaSequence.cpp
+Invoking: GCC C++ Compiler
+g++ -std=c++0x -std=c++11 -I"/data/home2/pagagne/Developpement/Illumicut_V5/tclaplib/include" -I"/data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG" -O3 -Wall -c -fmessage-length=0 -MMD -MP -MF"SimpleFastaSequence.d" -MT"SimpleFastaSequence.o" -o "SimpleFastaSequence.o" "../SimpleFastaSequence.cpp"
+Finished building: ../SimpleFastaSequence.cpp
+ 
+Building target: Illumicut
+Invoking: GCC C++ Linker
+g++ -L"/data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/Release" -o "Illumicut"  ./Main.o ./NewAlignmentFcts.o ./NewDNAFunctions.o ./Repartition.o ./SimpleFastaSequence.o   -lDNAlibPG -lpthread
+Finished building target: Illumicut
+ 
+12:30:45 **** Incremental Build of configuration Release for project Illumicut ****
+make all 
+make: Nothing to be done for `all'.

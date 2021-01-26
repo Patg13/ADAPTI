@@ -1,0 +1,67 @@
+14:40:06 **** Build of configuration Debug for project Main ****
+make all 
+Building file: ../NewDNAFunctions.cpp
+Invoking: GCC C++ Compiler
+g++ -std=gnu++11 -std=c++0x -std=c++11 -I/home/patrick/Gouvernement/Current/PatFinder_release/tclap-1.2.1/include -I"/home/patrick/Gouvernement/Current/PatFinder_release/DNAlibPG" -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"NewDNAFunctions.d" -MT"NewDNAFunctions.d" -o "NewDNAFunctions.o" "../NewDNAFunctions.cpp"
+../NewDNAFunctions.cpp: In function ‘int FindTrimPosition(const string&, const string&, int, int)’:
+../NewDNAFunctions.cpp:15:30: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+   if (p_limit > p_seq.length())
+                              ^
+../NewDNAFunctions.cpp:20:34: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+   if (len_primer >= p_seq.length())
+                                  ^
+../NewDNAFunctions.cpp: In function ‘std::string TrimSeq_FirstMatch(const string&, const string&, int, int, bool)’:
+../NewDNAFunctions.cpp:51:35: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+   if (len_pattern >= p_seq.length())
+                                   ^
+../NewDNAFunctions.cpp: In function ‘std::string TrimSeq_BestMatch(const string&, const string&, int, int)’:
+../NewDNAFunctions.cpp:93:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+../NewDNAFunctions.cpp: In function ‘std::string TrimSeq_HybridMatch(const string&, const string&, int, int)’:
+../NewDNAFunctions.cpp:97:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+Finished building: ../NewDNAFunctions.cpp
+ 
+Building file: ../PatFinder.cpp
+Invoking: GCC C++ Compiler
+g++ -std=gnu++11 -std=c++0x -std=c++11 -I/home/patrick/Gouvernement/Current/PatFinder_release/tclap-1.2.1/include -I"/home/patrick/Gouvernement/Current/PatFinder_release/DNAlibPG" -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"PatFinder.d" -MT"PatFinder.d" -o "PatFinder.o" "../PatFinder.cpp"
+../PatFinder.cpp: In function ‘int main(int, char**)’:
+../PatFinder.cpp:333:45: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+   for( int i =0; i < v_repartition_num.size(); i++){
+                                             ^
+../PatFinder.cpp:335:38: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+    if (i != v_repartition_num.size()-1 )
+                                      ^
+../PatFinder.cpp:316:7: warning: unused variable ‘sum’ [-Wunused-variable]
+   int sum=0;
+       ^
+Finished building: ../PatFinder.cpp
+ 
+Building file: ../Repartition.cpp
+Invoking: GCC C++ Compiler
+g++ -std=gnu++11 -std=c++0x -std=c++11 -I/home/patrick/Gouvernement/Current/PatFinder_release/tclap-1.2.1/include -I"/home/patrick/Gouvernement/Current/PatFinder_release/DNAlibPG" -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"Repartition.d" -MT"Repartition.d" -o "Repartition.o" "../Repartition.cpp"
+../Repartition.cpp: In function ‘void RepartitionCharge(std::vector<std::vector<cutlib::SimpleFastaSequence*> >*, std::vector<cutlib::SimpleFastaSequence>*, int)’:
+../Repartition.cpp:57:54: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+   if ((direction > 0) && (ite == p_repartition->size()))
+                                                      ^
+../Repartition.cpp: In function ‘void RepartitionChargeNum(std::vector<int>*, int, int)’:
+../Repartition.cpp:106:55: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+    if ((direction > 0) && (ite == p_repartition->size()))
+                                                       ^
+Finished building: ../Repartition.cpp
+ 
+Building file: ../SimpleFastaSequence.cpp
+Invoking: GCC C++ Compiler
+g++ -std=gnu++11 -std=c++0x -std=c++11 -I/home/patrick/Gouvernement/Current/PatFinder_release/tclap-1.2.1/include -I"/home/patrick/Gouvernement/Current/PatFinder_release/DNAlibPG" -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"SimpleFastaSequence.d" -MT"SimpleFastaSequence.d" -o "SimpleFastaSequence.o" "../SimpleFastaSequence.cpp"
+Finished building: ../SimpleFastaSequence.cpp
+ 
+Building target: Main
+Invoking: GCC C++ Linker
+g++ -L"/home/patrick/Gouvernement/Current/PatFinder_release/DNAlibPG/Debug" -o "Main"  ./NewDNAFunctions.o ./PatFinder.o ./Repartition.o ./SimpleFastaSequence.o   -lDNAlibPG -lpthread
+Finished building target: Main
+ 
+
+14:40:08 Build Finished (took 2s.112ms)
+

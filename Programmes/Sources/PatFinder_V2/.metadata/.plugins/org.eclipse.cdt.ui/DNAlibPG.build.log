@@ -1,0 +1,52 @@
+10:03:06 **** Build of configuration Release for project DNAlibPG ****
+make all 
+Building file: ../DNAfunctions.cpp
+Invoking: GCC C++ Compiler
+g++ -std=c++0x -O3 -Wall -c -fmessage-length=0 -MMD -MP -MF"DNAfunctions.d" -MT"DNAfunctions.d" -o "DNAfunctions.o" "../DNAfunctions.cpp"
+../DNAfunctions.cpp: In function ‘bool DNAF::CheckMatchSL(const string&, const string&, int)’:
+../DNAfunctions.cpp:112:29: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+  for (unsigned int i=0; i < limit; i++)
+                             ^
+../DNAfunctions.cpp: In function ‘std::string DNAF::BrowseSeq(const string&, int, int)’:
+../DNAfunctions.cpp:152:38: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+  if (p_len > (p_seq.length()-p_offset) )
+                                      ^
+../DNAfunctions.cpp: In function ‘std::string DNAF::TrimSeq(const string&, const string&, int, int, int)’:
+../DNAfunctions.cpp:168:29: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+  if (p_limit > p_seq.length())
+                             ^
+../DNAfunctions.cpp:173:33: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+  if (len_primer >= p_seq.length())
+                                 ^
+../DNAfunctions.cpp: In function ‘bool DNAF::isDegeneratedPrimer(const string&)’:
+../DNAfunctions.cpp:457:36: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+  for (int i=0; i < p_primer.length(); i++)
+                                    ^
+Finished building: ../DNAfunctions.cpp
+ 
+Building file: ../PhredScoreFunctions.cpp
+Invoking: GCC C++ Compiler
+g++ -std=c++0x -O3 -Wall -c -fmessage-length=0 -MMD -MP -MF"PhredScoreFunctions.d" -MT"PhredScoreFunctions.d" -o "PhredScoreFunctions.o" "../PhredScoreFunctions.cpp"
+../PhredScoreFunctions.cpp: In function ‘int PHF::countBases(const string&)’:
+../PhredScoreFunctions.cpp:20:33: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+  if (Correct_seq.find("\n") != -1) {
+                                 ^
+../PhredScoreFunctions.cpp: In function ‘int PHF::countBase(const string&, char)’:
+../PhredScoreFunctions.cpp:31:35: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+  for (int i = 0; i < p_seq.length(); i++){
+                                   ^
+../PhredScoreFunctions.cpp: In function ‘std::string PHF::Correct_LineBreak(const string&)’:
+../PhredScoreFunctions.cpp:42:34: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+   if (Correct_str.find("\n") != -1) {
+                                  ^
+Finished building: ../PhredScoreFunctions.cpp
+ 
+Building target: libDNAlibPG.a
+Invoking: GCC Archiver
+ar -r  "libDNAlibPG.a"  ./DNAfunctions.o ./PhredScoreFunctions.o   
+ar: creating libDNAlibPG.a
+Finished building target: libDNAlibPG.a
+ 
+
+10:03:07 Build Finished (took 614ms)
+

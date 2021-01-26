@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Rename resource &apos;Illumicut_V4&apos; to &apos;Illumicut&apos;" description="Rename resource &apos;Illumicut_V4&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="/Illumicut_V4" name="Illumicut" stamp="1511535691951" updateReferences="true"/>&#x0A;<refactoring comment="Delete 2 resources" deleteContents="false" description="Delete 2 resources" element1="/Illumicut/Debug" element2="/Illumicut/Release" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="2" stamp="1511535778348"/>
+</session>

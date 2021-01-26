@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Rename resource &apos;Main/Main.cpp&apos; to &apos;PatFinder.cpp&apos;" description="Rename resource &apos;Main.cpp&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Main.cpp" name="PatFinder.cpp" stamp="1452713751472" updateReferences="true"/>&#x0A;<refactoring comment="Rename resource &apos;PatFinder/PatFinder.cpp&apos; to &apos;Main.cpp&apos;" description="Rename resource &apos;PatFinder.cpp&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="PatFinder.cpp" name="Main.cpp" stamp="1452714039528" updateReferences="true"/>
+</session>

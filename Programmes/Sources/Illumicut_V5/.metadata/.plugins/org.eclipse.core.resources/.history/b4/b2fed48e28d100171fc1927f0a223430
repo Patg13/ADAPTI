@@ -1,0 +1,21 @@
+Repartition.o: ../Repartition.cpp ../Repartition.h \
+ ../SimpleFastaSequence.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/ComponentEmptyException.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/FastqException.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/DNAfunctions.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/DNAfunctions.h \
+ /data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/PhredScoreFunctions.h
+
+../Repartition.h:
+
+../SimpleFastaSequence.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/ComponentEmptyException.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/FastqException.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/DNAfunctions.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/DNAfunctions.h:
+
+/data/home2/pagagne/Developpement/Illumicut_V5/DNAlibPG/PhredScoreFunctions.h:

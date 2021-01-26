@@ -1,0 +1,6 @@
+12:30:45 **** Incremental Build of configuration Release for project Illumicut ****
+make all 
+make: Nothing to be done for `all'.
+
+12:30:46 Build Finished (took 73ms)
+

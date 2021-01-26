@@ -1,0 +1,23 @@
+/*
+ * NewDNAFunctions.h
+ *
+ *  Created on: 4 Jan 2016
+ *      Author: pagagne
+ */
+
+#ifndef NEWDNAFUNCTIONS_H_
+#define NEWDNAFUNCTIONS_H_
+
+#include <string>
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+#include <unordered_set>
+#include "DNAfunctions.h"
+
+int FindTrimPosition(const std::string& p_seq, const std::string& p_primer, int p_mismatch, int p_limit);
+
+bool IsValidPrimer(const std::string& seq);
+
+
+#endif /* NEWDNAFUNCTIONS_H_ */

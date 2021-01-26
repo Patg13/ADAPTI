@@ -1,0 +1,76 @@
+10:09:06 **** Build of configuration Release for project PatFinder ****
+make all 
+Building file: ../Main.cpp
+Invoking: GCC C++ Compiler
+g++ -std=c++0x -I"/home/patrick/Gouvernement/Current/PatFinder_release/DNAlibPG" -I/home/patrick/Gouvernement/Current/PatFinder_release/tclap-1.2.1/include -O3 -Wall -c -fmessage-length=0 -MMD -MP -MF"Main.d" -MT"Main.d" -o "Main.o" "../Main.cpp"
+../Main.cpp: In function ‘int main(int, char**)’:
+../Main.cpp:352:45: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+   for( int i =0; i < v_repartition_num.size(); i++){
+                                             ^
+../Main.cpp:354:38: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+    if (i != v_repartition_num.size()-1 )
+                                      ^
+../Main.cpp:335:7: warning: unused variable ‘sum’ [-Wunused-variable]
+   int sum=0;
+       ^
+../Main.cpp:455:44: warning: ignoring return value of ‘int system(const char*)’, declared with attribute warn_unused_result [-Wunused-result]
+  system(Regroup_command_linux_good.c_str());
+                                            ^
+../Main.cpp:456:45: warning: ignoring return value of ‘int system(const char*)’, declared with attribute warn_unused_result [-Wunused-result]
+  system(Regroup_command_linux_scrap.c_str());
+                                             ^
+../Main.cpp:458:42: warning: ignoring return value of ‘int system(const char*)’, declared with attribute warn_unused_result [-Wunused-result]
+  system(Clean_command_linux_good.c_str());
+                                          ^
+../Main.cpp:459:43: warning: ignoring return value of ‘int system(const char*)’, declared with attribute warn_unused_result [-Wunused-result]
+  system(Clean_command_linux_scrap.c_str());
+                                           ^
+Finished building: ../Main.cpp
+ 
+Building file: ../NewDNAFunctions.cpp
+Invoking: GCC C++ Compiler
+g++ -std=c++0x -I"/home/patrick/Gouvernement/Current/PatFinder_release/DNAlibPG" -I/home/patrick/Gouvernement/Current/PatFinder_release/tclap-1.2.1/include -O3 -Wall -c -fmessage-length=0 -MMD -MP -MF"NewDNAFunctions.d" -MT"NewDNAFunctions.d" -o "NewDNAFunctions.o" "../NewDNAFunctions.cpp"
+../NewDNAFunctions.cpp: In function ‘int FindTrimPosition(const string&, const string&, int, int)’:
+../NewDNAFunctions.cpp:15:30: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+   if (p_limit > p_seq.length())
+                              ^
+../NewDNAFunctions.cpp:20:34: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+   if (len_primer >= p_seq.length())
+                                  ^
+../NewDNAFunctions.cpp: In function ‘std::string TrimSeq_FirstMatch(const string&, const string&, int, int, bool)’:
+../NewDNAFunctions.cpp:51:35: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+   if (len_pattern >= p_seq.length())
+                                   ^
+../NewDNAFunctions.cpp: In function ‘std::string TrimSeq_BestMatch(const string&, const string&, int, int)’:
+../NewDNAFunctions.cpp:93:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+../NewDNAFunctions.cpp: In function ‘std::string TrimSeq_HybridMatch(const string&, const string&, int, int)’:
+../NewDNAFunctions.cpp:97:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+Finished building: ../NewDNAFunctions.cpp
+ 
+Building file: ../Repartition.cpp
+Invoking: GCC C++ Compiler
+g++ -std=c++0x -I"/home/patrick/Gouvernement/Current/PatFinder_release/DNAlibPG" -I/home/patrick/Gouvernement/Current/PatFinder_release/tclap-1.2.1/include -O3 -Wall -c -fmessage-length=0 -MMD -MP -MF"Repartition.d" -MT"Repartition.d" -o "Repartition.o" "../Repartition.cpp"
+../Repartition.cpp: In function ‘void RepartitionCharge(std::vector<std::vector<cutlib::SimpleFastaSequence*> >*, std::vector<cutlib::SimpleFastaSequence>*, int)’:
+../Repartition.cpp:57:54: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+   if ((direction > 0) && (ite == p_repartition->size()))
+                                                      ^
+../Repartition.cpp: In function ‘void RepartitionChargeNum(std::vector<int>*, int, int)’:
+../Repartition.cpp:106:55: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+    if ((direction > 0) && (ite == p_repartition->size()))
+                                                       ^
+Finished building: ../Repartition.cpp
+ 
+Building file: ../SimpleFastaSequence.cpp
+Invoking: GCC C++ Compiler
+g++ -std=c++0x -I"/home/patrick/Gouvernement/Current/PatFinder_release/DNAlibPG" -I/home/patrick/Gouvernement/Current/PatFinder_release/tclap-1.2.1/include -O3 -Wall -c -fmessage-length=0 -MMD -MP -MF"SimpleFastaSequence.d" -MT"SimpleFastaSequence.d" -o "SimpleFastaSequence.o" "../SimpleFastaSequence.cpp"
+Finished building: ../SimpleFastaSequence.cpp
+ 
+Building target: PatFinder
+Invoking: GCC C++ Linker
+g++ -L"/home/patrick/Gouvernement/Current/PatFinder_release/DNAlibPG/Release" -o "PatFinder"  ./Main.o ./NewDNAFunctions.o ./Repartition.o ./SimpleFastaSequence.o   -lDNAlibPG -lpthread
+Finished building target: PatFinder
+ 

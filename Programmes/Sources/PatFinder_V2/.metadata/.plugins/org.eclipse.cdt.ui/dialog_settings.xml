@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item value="${workspace_loc:/DNAlibPG/Release}" key="org.eclipse.cdt.utils.ui.controls.FileListControl"/>
+	<section name="completion_proposal_size">
+		<item value="310" key="contextSelector.size.x"/>
+		<item value="240" key="contextSelector.size.y"/>
+	</section>
+	<section name="org.eclipse.cdt.ui.text.hover.CMacroExpansionExploration">
+	</section>
+</section>

@@ -1,0 +1,474 @@
+/*
+ * Main.cpp
+ *
+ *  Created on: 18 Jun 2015
+ *      Author: pagagne
+ */
+
+#include <iostream>
+#include <vector>
+#include <deque>
+#include "SimpleFastaSequence.h"
+#include <algorithm>
+#include <numeric>
+#include <pthread.h>
+#include <thread>
+#include <cstdlib>
+#include <queue>
+#include <unistd.h>
+#include <cstdlib>
+#include "Repartition.h"
+#include <map>
+#include <ctime>
+#include <chrono>
+#include <tclap/CmdLine.h>
+#include "NewDNAFunctions.h"
+
+
+using namespace PHF;
+using namespace std;
+using namespace DNAF;
+using namespace cutlib;
+
+
+
+
+
+// Progression Bars Code
+void printProgBar( int percent ){
+  std::string bar;
+
+  for(int i = 0; i < 50; i++){
+    if( i < (percent/2)){
+      bar.replace(i,1,"=");
+    }else if( i == (percent/2)){
+      bar.replace(i,1,">");
+    }else{
+      bar.replace(i,1," ");
+    }
+  }
+
+  std::cout<< "\r" "[" << bar << "] ";
+  std::cout.width( 3 );
+  std::cout<< percent << "%     " << std::flush;
+}
+
+void printProgBarPro( int percent, const string& nom_pro ){
+  std::string bar;
+
+  for(int i = 0; i < 50; i++){
+    if( i < (percent/2)){
+      bar.replace(i,1,"=");
+    }else if( i == (percent/2)){
+      bar.replace(i,1,">");
+    }else{
+      bar.replace(i,1," ");
+    }
+  }
+
+  std::cout<< "\r" "[" << bar << "] ";
+  std::cout.width( 3 );
+  std::cout<< percent << "%     "<< nom_pro << " " << std::flush;
+}
+// END
+
+
+
+struct thread_data
+{
+	int thread_id;
+	string readfasta_filename;
+	string writefasta_filename_good;
+	string writefasta_filename_scrap;
+	int p_mismatch;
+	bool p_KeepPattern;
+	int p_side;
+	int file_start_index;
+	int file_end_index;
+	string p_pattern;
+};
+
+// Main multithread Function
+void *TrimSequences_Thread(void *threadarg)
+{
+
+	struct thread_data *my_data;
+
+	my_data = (struct thread_data *) threadarg;
+
+	ifstream Seqfile(my_data->readfasta_filename,ios::in);
+	ofstream Goodtemp;
+	ofstream Scraptemp;
+
+	Goodtemp.open(my_data->writefasta_filename_good,ios::out);
+	Scraptemp.open(my_data->writefasta_filename_scrap,ios::out);
+
+	int num_line=0;
+	int nb_seqs=0;
+
+	string seqname;
+	string seq;
+	string newseq;
+
+	int totalseq=((my_data->file_end_index-my_data->file_start_index)+1)/2;
+	string pro_name="Thread: "+to_string(my_data->thread_id);
+
+	for (string lines; getline( Seqfile, lines );)
+			{
+				num_line++;
+				if (num_line == my_data->file_start_index)
+				{
+					//cout << my_data->thread_id << " " << lines << " " << num_line << endl;
+					seqname=lines;
+					getline( Seqfile, seq);
+					num_line++;
+					break;
+				}
+			}
+
+	// First Sequence Treatment
+
+	newseq=TrimSeq_FirstMatch(PHF::Correct_LineBreak(seq),my_data->p_pattern, my_data->p_mismatch, my_data->p_side, my_data->p_KeepPattern);
+	if (newseq == "")
+	{
+		Scraptemp << seqname << "\n";
+		Scraptemp << seq << "\n";
+	}else{
+		Goodtemp << seqname << "\n";
+		Goodtemp << newseq << "\n";
+	}
+
+
+	while(true)
+	{
+		getline (Seqfile, seqname);
+		num_line++;
+		getline (Seqfile, seq);
+		num_line++;
+		if (num_line > my_data->file_end_index)
+		{
+			break;
+		}
+		if (nb_seqs % 10001 == 0){
+			printProgBarPro((((nb_seqs*100))/totalseq), pro_name);
+
+		}
+		newseq=TrimSeq_FirstMatch(PHF::Correct_LineBreak(seq),my_data->p_pattern, my_data->p_mismatch, my_data->p_side, my_data->p_KeepPattern);
+			if (newseq == "")
+			{
+				Scraptemp << seqname << "\n";
+				Scraptemp << seq << "\n";
+			}else{
+				Goodtemp << seqname << "\n";
+				Goodtemp << newseq << "\n";
+			}
+
+		nb_seqs+=1;
+
+	}
+
+	//string Pro_name="0";
+
+
+	printProgBarPro(100,pro_name);
+	//cout << seq_count << endl;
+
+	Goodtemp.close();
+	Scraptemp.close();
+	pthread_exit(NULL);
+}
+
+
+// Section de configuration des options
+
+
+
+int main(int argc, char** argv)
+{
+	//Option List
+	/*
+	 * Fasta infile REQ
+	 * Good fasta outfile REQ
+	 * Scrap fasta outfile REQ
+	 * Search Pattern REQ
+	 * Isolation Method (-1, 0, 1) REQ
+	 * Num Threads def:1 OPT
+	 * Keep_Pattern def:F OPT
+	 */
+
+	try{
+		TCLAP::CmdLine cmd("This program search for a user-specified pattern in a fasta file and extract sequences where the pattern is found", ' ', "1.0");
+
+		TCLAP::SwitchArg debug_messagesArg("d","debug","Display debug messages",cmd,false);
+
+		TCLAP::ValueArg<int> primer_mismatchmaxArg("m","mismatch_max","Maximal mismatch in pattern recognition (Default: 0)",false,3,"int");
+		cmd.add(primer_mismatchmaxArg);
+
+		TCLAP::SwitchArg KeepPatternSwitch("k","keep_pattern","Keep pattern in fasta output sequences",cmd,false);
+
+		TCLAP::ValueArg<int> nb_threadArg("t","num_threads","Number of threads to use (Default: 1)",false,1,"int");
+		cmd.add(nb_threadArg);
+
+		TCLAP::ValueArg<std::string> isolation_methodArg("i","isolation_method","Isolation method to use if pattern is found (A = Keep everything AFTER pattern, W= Keep the WHOLE sequence, B = Keep everything BEFORE pattern) (REQUIRED",true,"","method");
+		cmd.add(isolation_methodArg);
+
+		TCLAP::ValueArg<std::string> search_patternArg("p","search_pattern","Search Pattern (REQUIRED)", true,"","string");
+		cmd.add(search_patternArg);
+
+		TCLAP::ValueArg<std::string> sfasta_outArg("s","scrap_out","Scrap fasta output name (Sequences where pattern was not found) (REQUIRED)", true,"","filename");
+		cmd.add(sfasta_outArg);
+
+		TCLAP::ValueArg<std::string> gfasta_outArg("o","fasta_out","Fasta output name (REQUIRED)", true,"","filename");
+		cmd.add(gfasta_outArg);
+
+		TCLAP::ValueArg<std::string> fasta_inArg("f","fasta","Fasta file input (REQUIRED)", true,"","fasta");
+		cmd.add(fasta_inArg);
+
+		cmd.parse(argc, argv);
+
+	auto t1 = chrono::high_resolution_clock::now();
+
+
+	// Option Parsing
+
+
+	    string filename=fasta_inArg.getValue();
+		string fasta_savefile=gfasta_outArg.getValue();
+		string scrap_savefile=sfasta_outArg.getValue();
+
+		string cutside_UF=isolation_methodArg.getValue();
+		int cutside=3;
+
+		if (cutside_UF != "A" && cutside_UF != "W" && cutside_UF != "B")
+		{
+			throw TCLAP::ArgException("Isolation method must be A , W or B");
+		}else
+		{
+			if (cutside_UF == "A")
+			{
+				cutside=-1;
+			}
+			if (cutside_UF == "W")
+			{
+				cutside=0;
+			}
+			if (cutside_UF == "B")
+			{
+				cutside=1;
+			}
+		}
+
+		if (cutside == 3)
+		{
+			throw TCLAP::ArgException("Incorrect Isolation Method translation");
+		}
+		int num_threads=nb_threadArg.getValue();
+		int max_mismatch=primer_mismatchmaxArg.getValue();
+
+		bool display_debug=debug_messagesArg.getValue();
+		bool keep_pattern=KeepPatternSwitch.getValue();
+
+		string search_pattern=search_patternArg.getValue();
+
+		if (display_debug)
+		{
+			cout << "fasta in: " << filename << endl;
+			cout << "Good fasta savename: " << fasta_savefile << endl;
+			cout << "Scrap fasta savename: " << scrap_savefile << endl;
+			cout << "Search Pattern: " << search_pattern << endl;
+			cout << "Isolation Method: " << cutside << endl;
+			cout << "Keep Pattern: " << keep_pattern << endl;
+			cout << "Number of threads: " << num_threads << endl;
+			cout << "Maximal mismatch: " << max_mismatch << endl;
+		}
+
+
+/*
+	        string filename="Allseqs.fasta";
+			string fasta_savefile="good.fasta";
+			string scrap_savefile="scrap.fasta";
+
+			int num_threads=7;
+			int max_mismatch=3;
+			bool keep_pattern=false;
+			int cutside=1;
+			//string search_pattern="CTTTYARCAAYGGATCTCTT";
+			string search_pattern="CTCGGATCAGGTAGGGATACCCGCT";
+
+			bool display_debug=true;
+
+*/
+		// Program Start
+
+		ifstream ifs_count(filename,ios::in);
+
+
+		if(!ifs_count)
+		{
+			cerr << "Ouverture de " << filename << " impossible" << endl;
+			return -1;
+		}
+
+		cout << "Reading Fasta File" << endl;
+		int nb_lines=0;
+		for (string lines; getline( ifs_count, lines );)
+		{
+			nb_lines++;
+		}
+		ifs_count.close();
+
+
+		if(nb_lines % 2 != 0){
+			cout << "ERROR, Invalid fasta file" << endl;
+			return -1;
+		}
+
+
+		cout << nb_lines << " lines" <<  endl;
+		cout << ((nb_lines/2)) << " sequences" << endl << endl;
+
+		vector<int> v_repartition_num;
+
+		cout << "File splitting Calculation for " <<  num_threads << " threads..." << endl;
+		RepartitionChargeNum(&v_repartition_num,num_threads,nb_lines/2);
+
+		int sum=0;
+
+		/*
+		for(int i=0;i != v_repartition_num.size(); i++){
+			cout << v_repartition_num[i] << endl;
+			sum=sum+v_repartition_num[i];
+		}
+		cout << "Sum= " << sum << endl;
+*/
+
+		cout << "Creating File processing map..." << endl;
+
+		map<int,pair<int,int>> proc_map;
+
+		int start_index=1;
+		int end_index=0;
+
+		for( int i =0; i < v_repartition_num.size(); i++){
+
+			if (i != v_repartition_num.size()-1 )
+			{
+				end_index=v_repartition_num[i]*2*(i+1);
+				proc_map.insert(pair<int,pair<int,int>>(i,make_pair(start_index,end_index)));
+				start_index=end_index+1;
+			}else
+			{
+				end_index=nb_lines;
+				proc_map.insert(pair<int,pair<int,int>>(i,make_pair(start_index,end_index)));
+			}
+
+		}
+
+		map<int,pair<int,int>>::iterator itera;
+
+		if (display_debug){
+
+
+		int summe=0;
+		for( itera=proc_map.begin(); itera != proc_map.end();++itera)
+		{
+			cout << "Thread " << (*itera).first << " [" << (*itera).second.first << "," << (*itera).second.second << "] " << ((*itera).second.second - (*itera).second.first + 1)/2  << endl;
+			summe=summe+(((*itera).second.second - (*itera).second.first + 1)/2);
+		}
+		cout << summe << endl;
+		}
+
+		//cout << result << endl;
+
+
+	vector<string> v_tempfiles_good;
+	for (int i =0; i< num_threads; i++)
+	{
+		v_tempfiles_good.push_back(filename+"."+to_string(i)+".good"+".temp");
+		if (display_debug){
+			cout << v_tempfiles_good[i] << endl;
+		}
+	}
+	vector<string> v_tempfiles_scrap;
+	for (int i =0; i< num_threads; i++)
+	{
+		v_tempfiles_scrap.push_back(filename+"."+to_string(i)+".scrap"+".temp");
+		if (display_debug){
+			cout << v_tempfiles_scrap[i] << endl;
+		}
+	}
+
+	//return 0;
+
+		pthread_t threads[num_threads];
+		struct thread_data td[num_threads];
+		int rc;
+		int i;
+		pthread_attr_t attr;
+		void *status;
+
+		pthread_attr_init(&attr);
+		pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
+
+
+
+		for (i=0; i < num_threads; i++)
+		{
+			cout << "main() : creating thread, " << i << endl;
+			td[i].thread_id=i;
+			td[i].readfasta_filename=filename;
+			td[i].writefasta_filename_good=v_tempfiles_good[i];
+			td[i].writefasta_filename_scrap=v_tempfiles_scrap[i];
+			td[i].p_mismatch=max_mismatch;
+			td[i].p_KeepPattern=keep_pattern;
+			td[i].p_side=cutside;
+			td[i].file_start_index=proc_map.find(i)->second.first;
+			td[i].file_end_index=proc_map.find(i)->second.second;
+			td[i].p_pattern=search_pattern;
+			rc = pthread_create(&threads[i], NULL, TrimSequences_Thread, (void *)&td[i]);
+			if (rc)
+			{
+				cout << "ERREUR, cannot create thread " << rc << endl;
+				exit(-1);
+			}
+		}
+
+		pthread_attr_destroy(&attr);
+		for( i=0; i< num_threads; i++)
+		{
+			rc = pthread_join(threads[i], &status);
+			if (rc){
+				cout << "ERROR, Cannot join" << rc <<endl;
+				exit(-1);
+			}
+		}
+
+
+	cout << endl << "Executing system commands..." << endl;
+	string Regroup_command_linux_good="cat "+filename+".*"+".good.temp > "+fasta_savefile;
+	string Regroup_command_linux_scrap="cat "+filename+".*"+".scrap.temp > "+scrap_savefile;
+	string Clean_command_linux_good="rm -f "+filename+".*"+".good.temp";
+	string Clean_command_linux_scrap="rm -f "+filename+".*"+".scrap.temp";
+
+	cout << endl;
+	cout << "Regrouping temp files..."  << endl;
+	system(Regroup_command_linux_good.c_str());
+	system(Regroup_command_linux_scrap.c_str());
+	cout << "Cleaning temp files..."  << endl << endl;
+	system(Clean_command_linux_good.c_str());
+	system(Clean_command_linux_scrap.c_str());
+
+	auto t2 = chrono::high_resolution_clock::now();
+	cout << endl << "Time: " << chrono::duration_cast<chrono::seconds>(t2-t1).count();
+	cout << endl << "Time: " << chrono::duration_cast<chrono::minutes>(t2-t1).count();
+	cout << endl << "Program DONE" << endl;
+
+
+	}catch(TCLAP::ArgException &e)
+		{
+			cerr << "ERROR: " << e.error() << std::endl;
+		}
+		return 0;
+
+
+}

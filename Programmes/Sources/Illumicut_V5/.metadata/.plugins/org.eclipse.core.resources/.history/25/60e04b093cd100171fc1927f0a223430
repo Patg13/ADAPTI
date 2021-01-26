@@ -1,0 +1,678 @@
+/*
+ * Main.cpp
+ *
+ *  Created on: 18 Jun 2015
+ *      Author: pagagne
+ */
+
+#include <iostream>
+#include <vector>
+#include <deque>
+#include "SimpleFastaSequence.h"
+#include "FastaSequence.h"
+#include "FastqSequence.h"
+#include <algorithm>
+#include <numeric>
+#include <pthread.h>
+#include <thread>
+#include <cstdlib>
+#include <queue>
+#include <unistd.h>
+#include <cstdlib>
+#include <list>
+#include "Repartition.h"
+#include <map>
+#include <ctime>
+#include <chrono>
+#include <tclap/CmdLine.h>
+#include "NewDNAFunctions.h"
+
+
+using namespace PHF;
+using namespace std;
+using namespace PHC;
+using namespace DNAF;
+using namespace cutlib;
+
+
+
+//#define NUM_THREADS 3
+//#define NUM_MISMATCH 0
+//#define MIN_LENGTH 100
+
+
+
+// Progression Bars Code
+void printProgBar( int percent ){
+  std::string bar;
+
+  for(int i = 0; i < 50; i++){
+    if( i < (percent/2)){
+      bar.replace(i,1,"=");
+    }else if( i == (percent/2)){
+      bar.replace(i,1,">");
+    }else{
+      bar.replace(i,1," ");
+    }
+  }
+
+  std::cout<< "\r" "[" << bar << "] ";
+  std::cout.width( 3 );
+  std::cout<< percent << "%     " << std::flush;
+}
+
+void printProgBarPro( int percent, const string& nom_pro ){
+  std::string bar;
+
+  for(int i = 0; i < 50; i++){
+    if( i < (percent/2)){
+      bar.replace(i,1,"=");
+    }else if( i == (percent/2)){
+      bar.replace(i,1,">");
+    }else{
+      bar.replace(i,1," ");
+    }
+  }
+
+  std::cout<< "\r" "[" << bar << "] ";
+  std::cout.width( 3 );
+  std::cout<< percent << "%     "<< nom_pro << std::flush;
+}
+// END
+
+
+
+struct thread_data
+{
+	int thread_id;
+	vector<SimpleFastaSequence*>* p_dSeq;
+	int* p_thread_confirm;
+	int p_len;
+	int p_mismatch;
+	int p_maxoffset;
+	int p_ambigmax;
+	vector<string>* fprimer;
+	vector<string>* rprimer;
+	bool p_ignore_reverse;
+	//bool p_mirror_primers;
+};
+
+bool length_sort(const SimpleFastaSequence& s1, const SimpleFastaSequence& s2)
+{
+	return ( s1.reqNbBase() < s2.reqNbBase() );
+}
+
+bool line_sort(const SimpleFastaSequence& s1,const SimpleFastaSequence& s2)
+{
+	return ( s1.reqLine() < s2.reqLine() );
+}
+
+// Main multithread Function
+void *TrimSequences_Thread(void *threadarg)
+{
+
+	struct thread_data *my_data;
+
+	my_data = (struct thread_data *) threadarg;
+
+	int seq_count =0;
+
+	vector<SimpleFastaSequence*>::iterator iter;
+	vector<string>::iterator piter;
+	int limit_len=my_data->p_len;
+	int limit_ambig=my_data->p_ambigmax;
+	int work_size= my_data->p_dSeq->size();
+	string Pro_name="Thread: "+to_string(my_data->thread_id+1);
+	string reason="Sequence_Too_Short_Limit_<_"+to_string(limit_len);
+	string reason2="Sequence_Too_Much_Ambigs_>_"+to_string(limit_ambig);
+
+	int posFor;
+	int posRevc;
+
+	string trimmed;
+
+
+	for (iter=my_data->p_dSeq->begin(); iter != my_data->p_dSeq->end(); ++iter)
+	{
+
+		seq_count++;
+
+		/*
+		if ( seq_count % 10000 == 0)
+		{
+			cout << seq_count <<endl;
+		}
+		*/
+		if (seq_count % 20000 == 0)
+		{
+			printProgBarPro(((seq_count*100)/(work_size)),Pro_name);
+		}
+
+		for (piter=my_data->fprimer->begin(); piter != my_data->fprimer->end();++piter){
+			posFor=FindTrimPosition((*iter)->reqSeq(), (*piter), my_data->p_mismatch, my_data->p_maxoffset);
+			if (posFor != 0){
+				break;
+			}
+		}
+
+		if (posFor == 0){
+
+			(*iter)->asgScrapReason("Forward_Primer_Not_Found");
+			(*iter)->asgGoodInd(0);
+			continue;
+		}
+		if ( my_data->p_ignore_reverse == false ){
+			for (piter=my_data->rprimer->begin(); piter != my_data->rprimer->end(); ++piter){
+				posRevc=FindTrimPosition(ReverseComplementarySeq((*iter)->reqSeq()), (*piter), my_data->p_mismatch, my_data->p_maxoffset);
+				if (posRevc != 0){
+					break;
+				}
+			}
+
+		if (posRevc == 0){
+
+			(*iter)->asgScrapReason("Reverse_Primer_Not_Found");
+			(*iter)->asgGoodInd(0);
+			continue;
+			}
+		}else{
+			posRevc=0;
+		}
+
+		(*iter)->asgCutPosFor(posFor);
+		(*iter)->asgCutPosRevC(posRevc);
+
+		trimmed=(*iter)->reqSeq().substr((*iter)->reqCutPosFor(),(*iter)->reqNbBase()-(*iter)->reqCutPosFor()-(*iter)->reqCutPosRevC());
+
+
+		if (trimmed.length() < my_data->p_len)
+		{
+			(*iter)->asgScrapReason(reason);
+			(*iter)->asgGoodInd(0);
+			continue;
+		}
+		if (my_data->p_ambigmax >= 0 && (countBase(trimmed,'N') > my_data->p_ambigmax))
+		{
+			(*iter)->asgScrapReason(reason2);
+			(*iter)->asgGoodInd(0);
+			continue;
+		}
+		else{
+			(*iter)->asgGoodInd(1);
+			continue;
+		}
+	}
+	printProgBarPro(100,Pro_name);
+	//cout << seq_count << endl;
+
+	//my_data->p_dSeq->shrink_to_fit();
+	(*my_data->p_thread_confirm)=1;
+	pthread_exit(NULL);
+}
+
+
+// Section de configuration des options
+
+
+
+int main(int argc, char** argv)
+{
+	//Option List
+	/*
+	 * Fasta infile REQ
+	 * Good fasta outfile REQ
+	 * Scrap fasta outfile REQ
+	 * Forward Primer (5'-> 3') REQ
+	 * Reverse Primer (3'-> 5') REQ
+	 * Num Threads def:1 OPT
+	 * Check Multiple Primer (T or F) def:T OPT  (Become F if Degenerate primer)
+	 * Num Mismatch def:3 OPT
+	 * Min Length def:100 OPT
+	 * Max Offset def:5 OPT
+	 */
+
+	try{
+		TCLAP::CmdLine cmd("This program trim the forward and the reverse sequencing primers and everything before and after", ' ', "5.0");
+
+
+		TCLAP::SwitchArg debug_messagesArg("d","debug","Display debug messages",cmd,false);
+
+		TCLAP::ValueArg<int> max_offsetArg("o","max_offset","Maximal primers offset in sequence (max bp offset to check before stop) (Default: 5)",false,5,"int");
+		cmd.add(max_offsetArg);
+
+		TCLAP::ValueArg<int> min_lengthArg("l","min_length","Sequence minimum length after trim (Default: 0)",false,0,"int");
+		cmd.add(min_lengthArg);
+
+		TCLAP::ValueArg<int> primer_mismatchmaxArg("m","mismatch_max","Maximal mismatch in primer for recognition (Default: 0)",false,0,"int");
+		cmd.add(primer_mismatchmaxArg);
+
+		TCLAP::ValueArg<int> ambigmaxArg("a","ambig_max","Maximal ambiguity count in trimmed sequence, -1 value bypass this filter (Default: 0)",false,0,"int");
+		cmd.add(ambigmaxArg);
+
+		TCLAP::SwitchArg ignore_reverseSwitch("i","ignore_reverse","Program will not try to find reverse primer",cmd,false);
+
+		TCLAP::SwitchArg force_fastaSwitch("c","force_fasta","Force output in fasta format (will be ignored if format already fasta)",cmd,false);
+
+		TCLAP::ValueArg<int> nb_threadArg("t","num_threads","Number of threads to use (Default: 1)",false,1,"int");
+		cmd.add(nb_threadArg);
+
+		TCLAP::ValueArg<std::string> report_outArg("u","Report_txt","Report file output name (Optional)", false,"","path");
+		cmd.add(report_outArg);
+
+		TCLAP::ValueArg<std::string> rev_primerArg("r","reverse_primer","Reverse Primer 5'->3' or Reverse Primers File (one primer by line) (REQUIRED if -i option not used)", false,"","string");
+		cmd.add(rev_primerArg);
+
+		TCLAP::ValueArg<std::string> for_primerArg("p","forward_primer","Forward Primer 5'->3' or Forward Primers File (one primer by line) (REQUIRED)", true,"","string");
+		cmd.add(for_primerArg);
+
+		//TCLAP::SwitchArg mirror_primerfilesSwitch("q","mirror_primerfiles","Primer files are mirror, so each line from the forward primer file will only be checked with the same line from the other",cmd,false);
+
+		TCLAP::ValueArg<std::string> sfasta_outArg("s","scrap_out","Scrap Fasta or Fastq output name (REQUIRED)", true,"","path");
+		cmd.add(sfasta_outArg);
+
+		TCLAP::ValueArg<std::string> gfasta_outArg("g","fastx_out","Fasta or Fastq output name (REQUIRED)", true,"","path");
+		cmd.add(gfasta_outArg);
+
+		TCLAP::ValueArg<std::string> fasta_inArg("f","fastx_in","Fasta or Fastq file input (REQUIRED)", true,"","fasta/fastq");
+		cmd.add(fasta_inArg);
+
+		cmd.parse(argc, argv);
+
+	auto t1 = chrono::high_resolution_clock::now();
+
+
+	// Option Parsing
+	    string For_Primer=for_primerArg.getValue();
+	    string Rev_Primer=rev_primerArg.getValue();
+
+	    string filename=fasta_inArg.getValue();
+		string fasta_savefile=gfasta_outArg.getValue();
+		string scrap_savefile=sfasta_outArg.getValue();
+		string report_savefile=report_outArg.getValue();
+
+		bool report_flag=true;
+		if (report_savefile.empty()){
+			report_flag=false;
+		}
+
+		int max_offset=max_offsetArg.getValue();
+		int num_threads=nb_threadArg.getValue();
+		int seq_min_length=min_lengthArg.getValue();
+		int max_mismatch=primer_mismatchmaxArg.getValue();
+		int ambig_max=ambigmaxArg.getValue();
+
+		bool display_debug=debug_messagesArg.getValue();
+
+		bool ignore_reverse=ignore_reverseSwitch.getValue();
+
+		bool force_fasta=force_fastaSwitch.getValue();
+
+		//bool mirror_primers=mirror_primerfilesSwitch.getValue();
+
+		bool fprimer_is_file=false;
+		bool rprimer_is_file=false;
+
+		vector<string> fprimer_vect;
+		vector<string> rprimer_vect;
+
+
+		 if ( Rev_Primer == "" && ignore_reverse == false){
+			 cerr << "ERROR: Reverse Primer Not defined and -i option not used" << endl;
+			 return -1;
+		 }
+
+		 fprimer_is_file=PrimerIsFile(For_Primer);
+		 rprimer_is_file=PrimerIsFile(Rev_Primer);
+		 //cout << fprimer_is_file << " " << rprimer_is_file << endl;
+
+		 if (fprimer_is_file != rprimer_is_file ){
+			 cerr << "ERROR: Primer type disparity (one is primer the other is primer list)" << endl;
+			 return -1;
+		 }
+
+		 if ( fprimer_is_file == true){
+			 if ( ConvertFile2Vector(For_Primer,&fprimer_vect) == false ){
+				 cerr << "ERROR: One or more forward primers is/are not valid in the file" << endl;
+				 return -1;
+			 }
+		 }else{
+			 if ( IsValidPrimer(For_Primer) == false){
+				 cerr << "ERROR: Forward Primer not valid or file not found : " << For_Primer << endl;
+				 return -1;
+			 }
+			 fprimer_vect.push_back(For_Primer);
+		 }
+
+		 if ( rprimer_is_file == true){
+			 if ( ConvertFile2Vector(Rev_Primer,&rprimer_vect) == false ){
+				 cerr << "ERROR: One or more reverse primers is/are  not valid in the file" << endl;
+				 return -1;
+			 }
+		 }else{
+			 if (ignore_reverse == false ){
+				 if ( IsValidPrimer(Rev_Primer) == false){
+					 cerr << "ERROR: Reverse Primer not valid or file not found : " << Rev_Primer << endl;
+					 return -1;
+				 }
+				 rprimer_vect.push_back(Rev_Primer);
+			 }
+		 }
+
+
+		if (display_debug)
+		{
+			cout << "fasta in: " << filename << endl;
+			cout << "Good fasta savename: " << fasta_savefile << endl;
+			cout << "Scrap fasta savename: " << scrap_savefile << endl;
+
+			cout << "Forward primer: " << For_Primer << endl;
+			cout << "Reverse primer: " << Rev_Primer << endl;
+			cout << "Number of threads: " << num_threads << endl;
+			cout << "Minimum sequences length: " << seq_min_length << endl;
+			cout << "Maximal mismatch: " << max_mismatch << endl;
+			cout << "Maximal ambiguity: " << ambig_max << endl;
+			cout << "Maximal offset: " << max_offset << endl;
+			cout << "Ignore Reverse Flag: " << ignore_reverse << endl;
+			cout << "Force Fasta format Flag: " << force_fasta << endl;
+			if (report_flag){
+				cout << "Report filename: " << report_savefile << endl;
+			}
+
+		}
+
+
+	/*
+	        string filename="Allseqs.fasta";
+			string fasta_savefile="good.fasta";
+			string scrap_savefile="scrap.fasta";
+
+			int max_offset=5;
+			int num_threads=8;
+			int seq_min_length=150;
+			int max_mismatch=3;
+
+			bool display_debug=true;
+
+			bool check_multiprimer = false;
+			int multi_primer=0;
+			int degenerated_Fprimer=1;
+			int degenerated_Rprimer=1;
+			string For_Primer="GCATCGATGAAGAACGCAGC";
+			string Rev_Primer="TCCTCCGCTTATTGATATGC";
+		// Program Start
+			*/
+
+		vector<SimpleFastaSequence> Work_Container;
+			ifstream ifs_count(filename,ios::in);
+
+
+			if(!ifs_count)
+			{
+				cerr << filename << " Not found or not accessible" << endl;
+				return -1;
+			}
+
+			cout << "Reading Fasta File" << endl;
+			int nb_lines=0;
+			string type_check;
+			int file_type=2;
+			for (string lines; getline( ifs_count, lines );)
+			{
+				if (nb_lines==0){
+					type_check=lines;
+				}
+				nb_lines++;
+			}
+			ifs_count.close();
+
+			if (type_check[0] == '@'){
+				file_type=4;
+			}
+
+			if(nb_lines % file_type != 0){
+				cout << "ERROR, Invalid fastx file" << endl;
+				cout << "Not fasta or fastq file" << endl;
+				return -1;
+			}
+
+
+			cout << nb_lines << endl;
+			cout << ((nb_lines/file_type)) << endl;
+			if ( file_type == 2){
+				cout << "Fasta" << endl;
+			}else{
+				cout << "Fastq" << endl;
+			}
+
+			ifstream ifs(filename,ios::in);
+			int nb_seqs=0;
+			int line_pos=0;
+			cout << "Reading Progression :" << endl;
+			string seq;
+			string qual="";
+			for (string line; getline( ifs, line );)
+			{
+				string seqname=line;
+				line_pos++;
+				getline(ifs, line);
+				seq=line;
+				if (file_type==4){
+					getline(ifs,line);
+					getline(ifs,line);
+					qual=line;
+				}
+				SimpleFastaSequence FSequence(seqname, seq,0,qual);
+				FSequence.asgLine(line_pos);
+				FSequence.asgCutPosFor(0);
+				FSequence.asgCutPosRevC(0);
+				Work_Container.push_back( FSequence );
+				nb_seqs++;
+				if (nb_seqs % 150000 == 0)
+				{
+					printProgBar(((nb_seqs*100)/(nb_lines/2)));
+				}
+			}
+			printProgBar(100);
+			ifs.close();
+
+		cout << endl;
+		cout << "Sorting Main vector by sequences length" << endl;
+		sort(Work_Container.rbegin(),Work_Container.rend(), length_sort);
+		//Work_Container.sort(length_sort);
+		vector<vector<SimpleFastaSequence*> > v_repartition;
+
+
+		cout << "Creating threads Repartition Vector" << endl;
+		RepartitionCharge(&v_repartition, &Work_Container, num_threads);
+
+		if (display_debug){
+		cout << "Repartition Check" << endl;
+
+						double moy=0;
+						double nb=0;
+						for (int i=0; i < v_repartition.size();i++)
+						{
+							moy=0;
+							nb=0;
+							for (int j = 0; j < v_repartition[i].size(); j++)
+							{
+								moy=moy+v_repartition[i][j]->reqNbBase();
+								nb+=1;
+							}
+							cout << "Processeur " << i << "\t" << "Moyenne: " << moy/nb << "\t" << "Nb: " << nb << endl;
+						}
+		}
+
+
+		pthread_t threads[num_threads];
+		struct thread_data td[num_threads];
+		int rc;
+		int i;
+		pthread_attr_t attr;
+		void *status;
+
+		pthread_attr_init(&attr);
+		pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
+
+		vector<int> Thread_Confirm;
+		for(int j=0; j<num_threads;j++){
+			Thread_Confirm.push_back(0);
+		}
+
+		for (i=0; i < num_threads; i++)
+		{
+			cout << "main() : creating thread, " << i << endl;
+			td[i].thread_id=i;
+			td[i].p_dSeq=&v_repartition[i];
+			td[i].p_thread_confirm=&Thread_Confirm[i];
+			td[i].p_mismatch=max_mismatch;
+			td[i].p_len=seq_min_length;
+			td[i].p_ambigmax=ambig_max;
+			td[i].p_maxoffset=max_offset;
+			td[i].fprimer=&fprimer_vect;
+			td[i].rprimer=&rprimer_vect;
+			td[i].p_ignore_reverse=ignore_reverse;
+			//td[i].p_mirror_primers=mirror_primers;
+			rc = pthread_create(&threads[i], NULL, TrimSequences_Thread, (void *)&td[i]);
+			if (rc)
+			{
+				cout << "ERREUR, cannot create thread " << rc << endl;
+				exit(-1);
+			}
+		}
+
+		pthread_attr_destroy(&attr);
+		for( i=0; i< num_threads; i++)
+		{
+			rc = pthread_join(threads[i], &status);
+			if (rc){
+				cout << "ERROR, Cannot join" << rc <<endl;
+				exit(-1);
+			}
+		}
+
+	cout << endl << endl << "Verifying Threads Results Integrity" << endl;
+	for (int j=0;j<num_threads;j++){
+		if (Thread_Confirm[j]==0){
+			cout << "ERROR: thread " << j+1 << " Integrity value = 0" << endl;
+			cout << "Results integrity check FAILED" << endl;
+			cout << "Exiting Program" << endl;
+			return 2;
+		}
+	}
+	cout << "Results integrity check PASSED" << endl;
+	cout << endl << "Sorting Main vector by original position" << endl;
+	sort(Work_Container.begin(),Work_Container.end(), line_sort);
+	//Work_Container.sort(line_sort);
+
+	//vector<SimpleFastaSequence*> Work_Container_Vec;
+
+
+
+	//for(itera = Work_Container.begin();itera != Work_Container.end(); ++itera){
+	//	Work_Container_Vec.push_back(&*itera);
+	//}
+
+	cout << "Writing Results files" << endl;
+
+	ofstream fasta_sf;
+	ofstream scrap_sf;
+
+	fasta_sf.open(fasta_savefile,ios::out);
+	scrap_sf.open(scrap_savefile,ios::out);
+
+	map<string,int> map_rapport;
+	map<string,int>::iterator mapiter;
+
+	string too_short="Sequence_Too_Short_<_"+to_string(seq_min_length);
+	string too_ambig="Sequence_Too_Much_Ambigs_>_"+to_string(ambig_max);
+
+	map_rapport.insert( pair<string,int>("Forward_Primer_Not_Found",0));
+	map_rapport.insert( pair<string,int>("Reverse_Primer_Not_Found",0));
+	map_rapport.insert( pair<string,int>(too_short,0));
+	map_rapport.insert( pair<string,int>(too_ambig,0));
+	//map_rapport.insert( pair<string,int>("UNKNOWN",0));
+
+	int Goodseq=0;
+	int Badseq=0;
+
+	vector<SimpleFastaSequence>::iterator itera;
+	int ind=-1;
+	for (itera=Work_Container.begin(); itera != Work_Container.end(); ++itera)
+	{
+		ind++;
+		if (ind % 25000 == 0)
+		{
+			printProgBar(((ind*100)/(Work_Container.size())));
+		}
+		if (itera->reqGoodInd() == 1)
+		{
+			if (file_type==2 || force_fasta == true){
+				fasta_sf << itera->reqTrimFastaFormat();
+			}else{
+				fasta_sf << itera->reqTrimFastqFormat();
+			}
+			Goodseq++;
+			continue;
+		}
+		if (itera->reqGoodInd() == 0)
+		{
+			if (file_type==2 || force_fasta == true){
+			if (itera->reqCutPosFor() != 0 && (itera->reqCutPosRevC() != 0 || ignore_reverse==true)){
+				scrap_sf << itera->reqTrimScrapFastaFormat();
+			}else{
+				scrap_sf << itera->reqScrapFastaFormat();
+			}
+			}else{
+				if (itera->reqCutPosFor() != 0 && (itera->reqCutPosRevC() != 0 || ignore_reverse==true)){
+					scrap_sf << itera->reqTrimScrapFastqFormat();
+				}else{
+					scrap_sf << itera->reqScrapFastqFormat();
+				}
+			}
+			Badseq++;
+			mapiter = map_rapport.find(itera->reqScrapReason());
+			mapiter->second+=1;
+			continue;
+		}
+	}
+	printProgBar(100);
+	fasta_sf.close();
+	scrap_sf.close();
+	cout << endl << endl <<"Program Report:" << endl << endl;
+	cout << "Nb of good sequences: " << Goodseq << endl;
+	cout << endl << endl << "Nb of bad sequences: " << Badseq << endl;
+	cout << "Bad sequences repartition:" << endl;
+
+	for(mapiter=map_rapport.begin();mapiter !=map_rapport.end(); ++mapiter)
+	{
+		cout << mapiter->first << "  " << mapiter->second << endl;
+	}
+
+	if ( report_flag ){
+		ofstream report_sf;
+		report_sf.open(report_savefile,ios::out);
+		report_sf << "###### Primer Trimming Report ######" << endl << endl;
+		report_sf << "Nb of good sequences: " << Goodseq << endl;
+		report_sf << endl << "Nb of bad sequences: " << Badseq << endl << endl;
+		report_sf << endl << "Bad sequences repartition:" << endl << endl;
+
+		for(mapiter=map_rapport.begin();mapiter !=map_rapport.end(); ++mapiter)
+		{
+			report_sf << mapiter->first << "  " << mapiter->second << endl;
+		}
+		report_sf.close();
+	}
+
+	auto t2 = chrono::high_resolution_clock::now();
+	cout << endl << "Time: " << chrono::duration_cast<chrono::seconds>(t2-t1).count();
+	cout << endl << "Time: " << chrono::duration_cast<chrono::minutes>(t2-t1).count();
+	cout << endl << "Program DONE" << endl;
+
+	}catch(TCLAP::ArgException &e)
+		{
+			cerr << "ERROR: " << e.error() << std::endl;
+		}
+		return 0;
+
+}

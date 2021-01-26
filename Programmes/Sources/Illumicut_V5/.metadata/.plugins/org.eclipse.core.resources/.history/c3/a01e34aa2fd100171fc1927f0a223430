@@ -1,0 +1,52 @@
+/*
+ * NewDNAFunctions.cpp
+ *
+ *  Created on: 4 Jan 2016
+ *      Author: pagagne
+ */
+
+
+#include "NewDNAFunctions.h"
+
+std::unordered_set<std::string> valid_char = {"A","T","C","G","U","K","M","R","Y","S","W","B","V","H","D","X","I"};
+
+int FindTrimPosition(const std::string& p_seq,
+		const std::string& p_primer, int p_mismatch, int p_limit) {
+
+		int len_primer=p_primer.length();
+		if (p_limit > p_seq.length())
+		{
+			p_limit=p_seq.length();
+		}
+
+		if (len_primer >= p_seq.length())
+		{
+			return 0;
+		}
+
+		for (int i= 0; i < p_limit; i++)
+		{
+			std::string subseq=DNAF::BrowseSeq(p_seq, len_primer, i);
+			if (subseq == ""){
+				break;
+			}
+			if (DNAF::CheckMatchSL(subseq, p_primer, p_mismatch))
+			{
+				int cut_pos=i+len_primer;
+					return cut_pos;
+				}
+			}
+		return 0;
+
+}
+
+bool IsValidPrimer(const std::string& seq) {
+	bool valid=false;
+
+
+	for(int i =0; i < seq.length(); i++){
+		std::string letter = seq[i];
+		std::transform(letter.begin(),letter.end(), letter.begin(),::toupper);
+		std::unordered_set<std::string>::const_iterator got = valid_char.find(letter);
+	}
+}
