@@ -1,5 +1,9 @@
 #!/bin/bash
 
+echo "ERROR: Script depreciated"
+echo "Please use Configure_ADAPTI.V2.sh"
+exit 1
+
 current_dir=$( pwd )
 current_dir=$( echo $current_dir )
 
