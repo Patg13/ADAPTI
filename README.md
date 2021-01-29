@@ -19,7 +19,7 @@ This pipeline was designed to use less dependencies as possible, but you must in
 
 -**vsearch v2.14.2+ https://github.com/torognes/vsearch (if you want to use vsearch for the blast and the reassembly step without extracting the ITS1 prior to clustering, this is the only dependency you need)**
 
--**pandaseq v2.11 https://github.com/neufeld/pandaseq (can be replaced by pear https://github.com/xflouris/PEAR.git or vsearch)**
+-**pandaseq v2.11 https://github.com/neufeld/pandaseq (can be replaced by vsearch)**
 
 -**swarm v2.2.2+ https://github.com/torognes/swarm (can be replaced by vsearch) - VERSION 3.0 NOT TESTED**
 
