@@ -44,7 +44,7 @@ screen -L ./ADAPTI.sh optionfile.txt
 
 ##TO DO:
 
-**COMMIT THE FIRST VERSION OF ADAPTI (WILL BE DONE BY JANUARY 27 2021)**
+Remove PEAR support 
 
 Checkpoint system (for now, you have to relaunch the entire pipeline in case of error)
 
