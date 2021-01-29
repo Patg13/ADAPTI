@@ -1,0 +1,1 @@
+This folder will contain Cox / Coi specific programs, it's normally empty
